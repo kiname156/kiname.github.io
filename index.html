@@ -32,7 +32,7 @@ body{background-color:#f0f2f7;padding:env(safe-area-inset-top) env(safe-area-ins
 .logo-text{font-size:16px;font-weight:bold;color:#333;margin-left:10px}
 .menu-icon{background:none;border:none;color:#333;font-size:24px;cursor:pointer}
 .content-area{flex:1;padding:5px 20px 20px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
-.card{background-color:#fff;border-radius:20px;box-shadow:0 2px 10px rgba(0,0,0,0.1);width:100%;padding:25px;text-align:left;position:relative;height:100%;display:flex;flex-direction:column}
+.card{background-color:#fff;border-radius:20px;box-shadow:0 2px 10px rgba(0,0,0,0.1);width:100%;padding:25px;text-align:left;position:relative;height:auto;display:flex;flex-direction:column;flex:1;min-height:0}
 .photo-container{width:100%;display:flex;justify-content:center;margin-bottom:20px}
 .photo{width:130px;height:160px;background-color:#f0f0f0;border-radius:5px;overflow:hidden}
 .photo img{width:100%;height:100%;object-fit:cover}
@@ -51,7 +51,7 @@ body{background-color:#f0f2f7;padding:env(safe-area-inset-top) env(safe-area-ins
 .button-container{margin-top:auto;width:100%}
 .button{display:block;width:100%;padding:15px 0;background-color:#1e5aeb;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:500;cursor:pointer;text-align:center}
 .gradient-footer{height:50px;background:linear-gradient(to right,#12d8e5,#7d54c0);width:100%;position:relative;overflow:hidden;flex-shrink:0}
-.navy-footer{background-color:#0a1a3a;height:40px;width:100%;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.navy-footer{background-color:#0a1a3a;height:40px;width:100%;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);margin-bottom:-1px}
 .scrolling-text{position:absolute;color:#fff;font-size:14px;font-weight:bold;white-space:nowrap;top:50%;transform:translateY(-50%);animation:scrollText 12s linear infinite}
 @keyframes scrollText{0%{left:100%}100%{left:-300%}}
 #detailView{display:none;position:relative}
@@ -86,19 +86,17 @@ body{background-color:#f0f2f7;padding:env(safe-area-inset-top) env(safe-area-ins
 .loading-spinner{width:40px;height:40px;border:4px solid rgba(10,26,58,0.3);border-radius:50%;border-top:4px solid #0a1a3a;animation:spin 1s linear infinite}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 
-/* 아이폰 13 미니 특화 스타일 */
+/* 아이폰 특화 스타일 */
 @media only screen and (device-width: 375px) and (device-height: 812px), /* 아이폰 X/XS/13 미니 */
        only screen and (device-width: 390px) and (device-height: 844px), /* 아이폰 12/12 Pro/13/13 Pro */
-       only screen and (device-width: 428px) and (device-height: 926px) { /* 아이폰 12 Pro Max/13 Pro Max */
+       only screen and (device-width: 428px) and (device-height: 926px), /* 아이폰 12 Pro Max/13 Pro Max */
+       only screen and (max-width: 430px) { /* 추가: 다른 iPhone 모델들에 대한 일반 사이즈 처리 */
     .photo {
         width: 120px;
         height: 150px;
     }
     .card {
         padding: 20px;
-        height: auto;
-        max-height: none;
-        flex: 1;
     }
     .content-area {
         padding: 5px 15px 15px;
@@ -229,7 +227,267 @@ body{background-color:#f0f2f7;padding:env(safe-area-inset-top) env(safe-area-ins
     <div class="overlay" id="overlay"></div>
 
     <script>
-(function(){function w(){document.getElementById("startupScreen").style.display="none"}setTimeout(function(){var e=document.getElementById("startupScreen");e.style.opacity="0",e.style.transition="opacity 0.5s ease",setTimeout(function(){e.style.display="none"},500)},2e3);var t=null;function h(){var e=document.getElementById("qrCode"),n=110,i=4,r=Math.floor(n/i),s=document.createElement("canvas");s.width=n,s.height=n;var o=s.getContext("2d");function d(e,t){o.fillStyle="black",o.fillRect(e,t,7*i,7*i),o.fillStyle="white",o.fillRect(e+i,t+i,5*i,5*i),o.fillStyle="black",o.fillRect(e+2*i,t+2*i,3*i,3*i)}o.fillStyle="white",o.fillRect(0,0,n,n),d(0,0),d(n-7*i,0),d(0,n-7*i),o.fillStyle="black";for(var c=8;c<r-8;c++)c%2==0&&(o.fillRect(c*i,6*i,i,i),o.fillRect(6*i,c*i,i,i));o.fillStyle="black";for(var l=0;l<r;l++)for(var a=0;a<r;a++){var u=l<7&&a<7,f=l<7&&a>r-8,m=l>r-8&&a<7,v=l===6&&a>=8&&a<r-8,b=a===6&&l>=8&&l<r-8;u||f||m||v||b||Math.random()<.5&&o.fillRect(a*i,l*i,i,i)}e.style.background=`url(${s.toDataURL()})`,e.style.backgroundSize="100% 100%"}function p(){var e=document.getElementById("timeProgress"),n=document.getElementById("timeCounter"),i=30;t&&clearInterval(t),e.style.width="100%",n.textContent=`${i}초`,t=setInterval(()=>{i--,n.textContent=`${i}초`;var r=i/30*100;e.style.width=`${r}%`,i<=0&&(clearInterval(t),n.textContent="0초",e.style.width="0%",setTimeout(()=>{h(),p()},500))},1e3)}function g(){var e=document.getElementById("scrollingText"),n="캡쳐방지시스템이 작동중입니다. ",i="";for(var r=0;r<15;r++)i+=n;e.textContent=i}function y(){var e=document.getElementById("showDetailBtn"),n=document.getElementById("backToMainBtn"),i=document.getElementById("backToMainBtn2"),r=document.getElementById("mainView"),s=document.getElementById("detailView"),o=document.getElementById("mainPhoto"),d=document.getElementById("detailPhoto");e.addEventListener("click",function(){d.innerHTML=o.innerHTML,r.style.display="none",s.style.display="block",t&&clearInterval(t)});function c(){s.style.display="none",r.style.display="block",p()}n.addEventListener("click",c),i.addEventListener("click",c)}function S(){var e=document.getElementById("openMenuBtn"),n=document.getElementById("closeMenuBtn"),i=document.getElementById("sideMenu"),r=document.getElementById("overlay");e.addEventListener("click",function(){i.classList.add("open"),r.classList.add("open")}),n.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")}),r.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")})}function I(){document.getElementById("logoSection").addEventListener("click",function(){window.location.reload()})}function k(){var e=document.querySelectorAll("img");e.forEach(e=>{e.onerror=function(){console.log(`이미지 로드 실패: ${e.src}`),"profileImg"===e.id?(e.style.display="none",e.parentElement.style.backgroundColor="#ccc"):"공식 인장"===e.alt?(e.style.display="none",e.parentElement.style.backgroundColor="rgba(220, 20, 20, 0.1)",e.parentElement.style.border="2px solid rgba(220, 20, 20, 0.3)",e.parentElement.style.borderRadius="50%"):"정부로고"===e.alt&&(e.style.display="none",e.parentElement.textContent="정부24",e.parentElement.style.fontWeight="bold",e.parentElement.style.color="#0a1a3a")}})}document.addEventListener("DOMContentLoaded",function(){h(),p(),g(),y(),S(),I(),k(),document.addEventListener("gesturestart",function(e){e.preventDefault()}), document.documentElement.style.height = window.innerHeight + "px"})})();
+(function(){
+    // 시작 화면 처리
+    function hideStartupScreen(){
+        document.getElementById("startupScreen").style.display="none";
+    }
+    
+    // 시작 화면 자동 숨김 처리
+    setTimeout(function(){
+        var startupScreen = document.getElementById("startupScreen");
+        startupScreen.style.opacity = "0";
+        startupScreen.style.transition = "opacity 0.5s ease";
+        setTimeout(function(){
+            startupScreen.style.display = "none";
+        }, 500);
+    }, 2000);
+
+    var timeInterval = null;
+
+    // QR 코드 생성 함수
+    function generateQR(){
+        var qrContainer = document.getElementById("qrCode");
+        var size = 110;
+        var pixelSize = 4;
+        var modules = Math.floor(size / pixelSize);
+        
+        var canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext("2d");
+        
+        // 함수: 위치 표시자 생성
+        function drawPositionPattern(x, y){
+            ctx.fillStyle = "black";
+            ctx.fillRect(x, y, 7 * pixelSize, 7 * pixelSize);
+            ctx.fillStyle = "white";
+            ctx.fillRect(x + pixelSize, y + pixelSize, 5 * pixelSize, 5 * pixelSize);
+            ctx.fillStyle = "black";
+            ctx.fillRect(x + 2 * pixelSize, y + 2 * pixelSize, 3 * pixelSize, 3 * pixelSize);
+        }
+        
+        // 흰색 배경
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, size, size);
+        
+        // 위치 표시자 (왼쪽 상단, 오른쪽 상단, 왼쪽 하단)
+        drawPositionPattern(0, 0);
+        drawPositionPattern(size - 7 * pixelSize, 0);
+        drawPositionPattern(0, size - 7 * pixelSize);
+        
+        // 타이밍 패턴
+        ctx.fillStyle = "black";
+        for(var i = 8; i < modules - 8; i++){
+            if(i % 2 === 0){
+                ctx.fillRect(i * pixelSize, 6 * pixelSize, pixelSize, pixelSize);
+                ctx.fillRect(6 * pixelSize, i * pixelSize, pixelSize, pixelSize);
+            }
+        }
+        
+        // 데이터 및 오류 정정 코드 랜덤 생성
+        ctx.fillStyle = "black";
+        for(var y = 0; y < modules; y++){
+            for(var x = 0; x < modules; x++){
+                // 위치 표시자 영역 제외
+                var isInPositionPattern = 
+                    (y < 7 && x < 7) || // 왼쪽 상단
+                    (y < 7 && x > modules - 8) || // 오른쪽 상단
+                    (y > modules - 8 && x < 7); // 왼쪽 하단
+                
+                // 타이밍 패턴 제외
+                var isInTimingPattern = 
+                    (y === 6 && x >= 8 && x < modules - 8) || 
+                    (x === 6 && y >= 8 && y < modules - 8);
+                
+                if(!isInPositionPattern && !isInTimingPattern && Math.random() < 0.5){
+                    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                }
+            }
+        }
+        
+        // QR 코드 이미지 설정
+        qrContainer.style.background = `url(${canvas.toDataURL()})`;
+        qrContainer.style.backgroundSize = "100% 100%";
+    }
+
+    // 타이머 시작 함수
+    function startTimer(){
+        var progressBar = document.getElementById("timeProgress");
+        var timeCounter = document.getElementById("timeCounter");
+        var seconds = 30;
+        
+        // 기존 타이머 정리
+        if(timeInterval){
+            clearInterval(timeInterval);
+        }
+        
+        // 초기 설정
+        progressBar.style.width = "100%";
+        timeCounter.textContent = `${seconds}초`;
+        
+        // 타이머 설정
+        timeInterval = setInterval(() => {
+            seconds--;
+            timeCounter.textContent = `${seconds}초`;
+            
+            var percentage = (seconds / 30) * 100;
+            progressBar.style.width = `${percentage}%`;
+            
+            if(seconds <= 0){
+                clearInterval(timeInterval);
+                timeCounter.textContent = "0초";
+                progressBar.style.width = "0%";
+                
+                // 0초가 되면 QR 코드 재생성 및 타이머 재시작
+                setTimeout(() => {
+                    generateQR();
+                    startTimer();
+                }, 500);
+            }
+        }, 1000);
+    }
+
+    // 스크롤 텍스트 초기화
+    function initScrollingText(){
+        var scrollText = document.getElementById("scrollingText");
+        var baseText = "캡쳐방지시스템이 작동중입니다. ";
+        var fullText = "";
+        
+        // 텍스트 반복
+        for(var i = 0; i < 15; i++){
+            fullText += baseText;
+        }
+        
+        scrollText.textContent = fullText;
+    }
+
+    // 페이지 전환 함수
+    function initPageTransitions(){
+        var showDetailBtn = document.getElementById("showDetailBtn");
+        var backToMainBtn = document.getElementById("backToMainBtn");
+        var backToMainBtn2 = document.getElementById("backToMainBtn2");
+        var mainView = document.getElementById("mainView");
+        var detailView = document.getElementById("detailView");
+        var mainPhoto = document.getElementById("mainPhoto");
+        var detailPhoto = document.getElementById("detailPhoto");
+        
+        // 상세 정보 표시 버튼 클릭
+        showDetailBtn.addEventListener("click", function(){
+            // 사진 복사
+            detailPhoto.innerHTML = mainPhoto.innerHTML;
+            
+            // 화면 전환
+            mainView.style.display = "none";
+            detailView.style.display = "block";
+            
+            // 타이머 정지
+            if(timeInterval){
+                clearInterval(timeInterval);
+            }
+        });
+        
+        // 이전으로 돌아가는 함수
+        function backToMain(){
+            detailView.style.display = "none";
+            mainView.style.display = "block";
+            startTimer();
+        }
+        
+        // 뒤로 가기 버튼 클릭 이벤트
+        backToMainBtn.addEventListener("click", backToMain);
+        backToMainBtn2.addEventListener("click", backToMain);
+    }
+
+    // 사이드 메뉴 기능
+    function initSideMenu(){
+        var openMenuBtn = document.getElementById("openMenuBtn");
+        var closeMenuBtn = document.getElementById("closeMenuBtn");
+        var sideMenu = document.getElementById("sideMenu");
+        var overlay = document.getElementById("overlay");
+        
+        // 메뉴 열기
+        openMenuBtn.addEventListener("click", function(){
+            sideMenu.classList.add("open");
+            overlay.classList.add("open");
+        });
+        
+        // 메뉴 닫기
+        closeMenuBtn.addEventListener("click", function(){
+            sideMenu.classList.remove("open");
+            overlay.classList.remove("open");
+        });
+        
+        // 오버레이 클릭 시 메뉴 닫기
+        overlay.addEventListener("click", function(){
+            sideMenu.classList.remove("open");
+            overlay.classList.remove("open");
+        });
+    }
+
+    // 로고 클릭 시 새로고침
+    function initLogoRefresh(){
+        document.getElementById("logoSection").addEventListener("click", function(){
+            window.location.reload();
+        });
+    }
+
+    // 이미지 오류 처리
+    function handleImageErrors(){
+        var images = document.querySelectorAll("img");
+        
+        images.forEach(img => {
+            img.onerror = function(){
+                console.log(`이미지 로드 실패: ${img.src}`);
+                
+                // 각 이미지 종류별 대체 처리
+                if(img.id === "profileImg"){
+                    img.style.display = "none";
+                    img.parentElement.style.backgroundColor = "#ccc";
+                }
+                else if(img.alt === "공식 인장"){
+                    img.style.display = "none";
+                    img.parentElement.style.backgroundColor = "rgba(220, 20, 20, 0.1)";
+                    img.parentElement.style.border = "2px solid rgba(220, 20, 20, 0.3)";
+                    img.parentElement.style.borderRadius = "50%";
+                }
+                else if(img.alt === "정부로고"){
+                    img.style.display = "none";
+                    img.parentElement.textContent = "정부24";
+                    img.parentElement.style.fontWeight = "bold";
+                    img.parentElement.style.color = "#0a1a3a";
+                }
+            };
+        });
+    }
+
+    // DOM 로드 시 실행
+    document.addEventListener("DOMContentLoaded", function(){
+        // 모든 함수 초기화
+        generateQR();
+        startTimer();
+        initScrollingText();
+        initPageTransitions();
+        initSideMenu();
+        initLogoRefresh();
+        handleImageErrors();
+        
+        // iOS에서 핀치 줌 비활성화
+        document.addEventListener("gesturestart", function(e){
+            e.preventDefault();
+        });
+        
+        // 뷰포트 높이 문제 해결
+        function setViewportHeight() {
+            document.documentElement.style.height = window.innerHeight + "px";
+            document.body.style.height = window.innerHeight + "px";
+        }
+        
+        // 초기 설정 및 리사이즈 시 뷰포트 높이 재설정
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+    });
+})();
     </script>
 </body>
 </html>
