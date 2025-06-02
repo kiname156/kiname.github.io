@@ -2,11 +2,14 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#0a1a3a">
+    <meta name="msapplication-TileColor" content="#0a1a3a">
+    <meta name="msapplication-navbutton-color" content="#0a1a3a">
     <title>주민등록증 모바일 확인 서비스</title>
     
     <!-- 앱 아이콘 및 앱 이름 설정 -->
@@ -20,37 +23,64 @@
     <meta name="application-name" content="정부24">
     
     <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Malgun Gothic',sans-serif;-webkit-tap-highlight-color:transparent}
+/* CSS 변수로 실제 뷰포트 높이 설정 */
+:root {
+    --vh: 1vh;
+    --real-vh: 100vh;
+}
 
-html,body{
-    height:100vh;
-    width:100vw;
-    overflow:hidden;
-    position:fixed;
-    touch-action:manipulation;
-    -webkit-touch-callout:none;
-    -webkit-user-select:none;
-    user-select:none;
-    background-color:#0a1a3a;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Malgun Gothic',sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    background-color: #0a1a3a;
+    -webkit-text-size-adjust: 100%;
 }
 
 body{
-    background-color:#0a1a3a;
-    padding:0;
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    background-color: #0a1a3a;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
 }
 
 .container{
-    max-width:100%;
-    width:100vw;
-    height:100vh;
-    margin:0 auto;
-    background:#f0f2f7;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    overflow:hidden;
-    padding-top:env(safe-area-inset-top);
-    padding-bottom:env(safe-area-inset-bottom);
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
+    margin: 0;
+    background: #f0f2f7;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .navy-header{
@@ -116,9 +146,11 @@ body{
     padding:25px;
     text-align:left;
     position:relative;
-    height:calc(100vh - 200px);
+    height:calc(var(--vh, 1vh) * 100 - 200px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     max-height:550px;
     overflow:hidden;
+    display:flex;
+    flex-direction:column;
 }
 
 .photo-container{
@@ -224,6 +256,9 @@ body{
     width:100%;
     margin:0;
     padding:0;
+    background-color:#fff;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
 }
 
 .button{
@@ -239,6 +274,9 @@ body{
     font-weight:500;
     cursor:pointer;
     text-align:center;
+    margin:0;
+    position:relative;
+    z-index:5;
 }
 
 .gradient-footer{
@@ -274,14 +312,16 @@ body{
 #detailView{
     display:none;
     position:relative;
-    padding-bottom:50px;
+    padding-bottom:0;
+    height:100%;
 }
 
 .detail-content{
     display:flex;
     flex-direction:column;
     width:100%;
-    height:calc(100% - 50px);
+    height:calc(100% - 60px);
+    padding-bottom:10px;
 }
 
 .detail-photo-container{
@@ -387,6 +427,10 @@ body{
     width:100%;
     margin:0;
     padding:0;
+    background-color:#fff;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+    z-index:10;
 }
 
 .side-menu{
@@ -512,13 +556,45 @@ body{
     100%{transform:rotate(360deg)}
 }
 
-/* iOS 사파리 특별 대응 */
+/* iOS 사파리 및 모든 모바일 브라우저 특별 대응 */
 @supports (-webkit-appearance: none) {
     html, body {
         height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
     }
     
     .container {
+        height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* 안드로이드 크롬 대응 */
+@media screen and (max-height: 500px) {
+    .card {
+        max-height: 400px;
+    }
+}
+
+/* 아이폰 SE 등 작은 화면 대응 */
+@media screen and (max-height: 568px) {
+    .card {
+        padding: 20px;
+        max-height: 450px;
+    }
+}
+
+/* 풀스크린 대응 */
+@media screen and (display-mode: fullscreen) {
+    html, body, .container {
+        height: 100vh;
+    }
+}
+
+/* PWA 환경 대응 */
+@media all and (display-mode: standalone) {
+    html, body, .container {
+        height: 100vh;
         height: -webkit-fill-available;
     }
 }
@@ -640,7 +716,35 @@ body{
     <div class="overlay" id="overlay"></div>
 
     <script>
-(function(){function w(){document.getElementById("startupScreen").style.display="none"}setTimeout(function(){var e=document.getElementById("startupScreen");e.style.opacity="0",e.style.transition="opacity 0.5s ease",setTimeout(function(){e.style.display="none"},500)},2e3);var t=null;function h(){var e=document.getElementById("qrCode"),n=120,i=4,r=Math.floor(n/i),s=document.createElement("canvas");s.width=n,s.height=n;var o=s.getContext("2d");function d(e,t){o.fillStyle="black",o.fillRect(e,t,7*i,7*i),o.fillStyle="white",o.fillRect(e+i,t+i,5*i,5*i),o.fillStyle="black",o.fillRect(e+2*i,t+2*i,3*i,3*i)}o.fillStyle="white",o.fillRect(0,0,n,n),d(0,0),d(n-7*i,0),d(0,n-7*i),o.fillStyle="black";for(var c=8;c<r-8;c++)c%2==0&&(o.fillRect(c*i,6*i,i,i),o.fillRect(6*i,c*i,i,i));o.fillStyle="black";for(var l=0;l<r;l++)for(var a=0;a<r;a++){var u=l<7&&a<7,f=l<7&&a>r-8,m=l>r-8&&a<7,v=l===6&&a>=8&&a<r-8,b=a===6&&l>=8&&l<r-8;u||f||m||v||b||Math.random()<.5&&o.fillRect(a*i,l*i,i,i)}e.style.background=`url(${s.toDataURL()})`,e.style.backgroundSize="100% 100%"}function p(){var e=document.getElementById("timeProgress"),n=document.getElementById("timeCounter"),i=30;t&&clearInterval(t),e.style.width="100%",n.textContent=`${i}초`,t=setInterval(()=>{i--,n.textContent=`${i}초`;var r=i/30*100;e.style.width=`${r}%`,i<=0&&(clearInterval(t),n.textContent="0초",e.style.width="0%",setTimeout(()=>{h(),p()},500))},1e3)}function g(){var e=document.getElementById("scrollingText"),n="캡쳐방지시스템이 작동중입니다. ",i="";for(var r=0;r<15;r++)i+=n;e.textContent=i}function y(){var e=document.getElementById("showDetailBtn"),n=document.getElementById("backToMainBtn"),i=document.getElementById("backToMainBtn2"),r=document.getElementById("mainView"),s=document.getElementById("detailView"),o=document.getElementById("mainPhoto"),d=document.getElementById("detailPhoto");e.addEventListener("click",function(){d.innerHTML=o.innerHTML,r.style.display="none",s.style.display="block",t&&clearInterval(t)});function c(){s.style.display="none",r.style.display="block",p()}n.addEventListener("click",c),i.addEventListener("click",c)}function S(){var e=document.getElementById("openMenuBtn"),n=document.getElementById("closeMenuBtn"),i=document.getElementById("sideMenu"),r=document.getElementById("overlay");e.addEventListener("click",function(){i.classList.add("open"),r.classList.add("open")}),n.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")}),r.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")})}function I(){document.getElementById("logoSection").addEventListener("click",function(){window.location.reload()})}function k(){var e=document.querySelectorAll("img");e.forEach(e=>{e.onerror=function(){console.log(`이미지 로드 실패: ${e.src}`),"profileImg"===e.id?(e.style.display="none",e.parentElement.style.backgroundColor="#ccc"):"공식 인장"===e.alt?(e.style.display="none",e.parentElement.style.backgroundColor="rgba(220, 20, 20, 0.1)",e.parentElement.style.border="2px solid rgba(220, 20, 20, 0.3)",e.parentElement.style.borderRadius="50%"):"정부로고"===e.alt&&(e.style.display="none",e.parentElement.textContent="정부24",e.parentElement.style.fontWeight="bold",e.parentElement.style.color="#0a1a3a")}})}document.addEventListener("DOMContentLoaded",function(){h(),p(),g(),y(),S(),I(),k(),document.addEventListener("gesturestart",function(e){e.preventDefault()})})})();
+// 실제 뷰포트 높이 계산 및 설정
+function setRealViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`);
+}
+
+// 뷰포트 높이 초기 설정 및 리사이즈 이벤트
+setRealViewportHeight();
+window.addEventListener('resize', setRealViewportHeight);
+window.addEventListener('orientationchange', () => {
+    setTimeout(setRealViewportHeight, 100);
+});
+
+// 모바일 주소창 숨김 처리
+function hideAddressBar() {
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+                setRealViewportHeight();
+            }, 100);
+        });
+    }
+}
+
+hideAddressBar();
+
+(function(){function w(){document.getElementById("startupScreen").style.display="none"}setTimeout(function(){var e=document.getElementById("startupScreen");e.style.opacity="0",e.style.transition="opacity 0.5s ease",setTimeout(function(){e.style.display="none"},500)},2e3);var t=null;function h(){var e=document.getElementById("qrCode"),n=120,i=4,r=Math.floor(n/i),s=document.createElement("canvas");s.width=n,s.height=n;var o=s.getContext("2d");function d(e,t){o.fillStyle="black",o.fillRect(e,t,7*i,7*i),o.fillStyle="white",o.fillRect(e+i,t+i,5*i,5*i),o.fillStyle="black",o.fillRect(e+2*i,t+2*i,3*i,3*i)}o.fillStyle="white",o.fillRect(0,0,n,n),d(0,0),d(n-7*i,0),d(0,n-7*i),o.fillStyle="black";for(var c=8;c<r-8;c++)c%2==0&&(o.fillRect(c*i,6*i,i,i),o.fillRect(6*i,c*i,i,i));o.fillStyle="black";for(var l=0;l<r;l++)for(var a=0;a<r;a++){var u=l<7&&a<7,f=l<7&&a>r-8,m=l>r-8&&a<7,v=l===6&&a>=8&&a<r-8,b=a===6&&l>=8&&l<r-8;u||f||m||v||b||Math.random()<.5&&o.fillRect(a*i,l*i,i,i)}e.style.background=`url(${s.toDataURL()})`,e.style.backgroundSize="100% 100%"}function p(){var e=document.getElementById("timeProgress"),n=document.getElementById("timeCounter"),i=30;t&&clearInterval(t),e.style.width="100%",n.textContent=`${i}초`,t=setInterval(()=>{i--,n.textContent=`${i}초`;var r=i/30*100;e.style.width=`${r}%`,i<=0&&(clearInterval(t),n.textContent="0초",e.style.width="0%",setTimeout(()=>{h(),p()},500))},1e3)}function g(){var e=document.getElementById("scrollingText"),n="캡쳐방지시스템이 작동중입니다. ",i="";for(var r=0;r<15;r++)i+=n;e.textContent=i}function y(){var e=document.getElementById("showDetailBtn"),n=document.getElementById("backToMainBtn"),i=document.getElementById("backToMainBtn2"),r=document.getElementById("mainView"),s=document.getElementById("detailView"),o=document.getElementById("mainPhoto"),d=document.getElementById("detailPhoto");e.addEventListener("click",function(){d.innerHTML=o.innerHTML,r.style.display="none",s.style.display="block",t&&clearInterval(t)});function c(){s.style.display="none",r.style.display="block",p()}n.addEventListener("click",c),i.addEventListener("click",c)}function S(){var e=document.getElementById("openMenuBtn"),n=document.getElementById("closeMenuBtn"),i=document.getElementById("sideMenu"),r=document.getElementById("overlay");e.addEventListener("click",function(){i.classList.add("open"),r.classList.add("open")}),n.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")}),r.addEventListener("click",function(){i.classList.remove("open"),r.classList.remove("open")})}function I(){document.getElementById("logoSection").addEventListener("click",function(){window.location.reload()})}function k(){var e=document.querySelectorAll("img");e.forEach(e=>{e.onerror=function(){console.log(`이미지 로드 실패: ${e.src}`),"profileImg"===e.id?(e.style.display="none",e.parentElement.style.backgroundColor="#ccc"):"공식 인장"===e.alt?(e.style.display="none",e.parentElement.style.backgroundColor="rgba(220, 20, 20, 0.1)",e.parentElement.style.border="2px solid rgba(220, 20, 20, 0.3)",e.parentElement.style.borderRadius="50%"):"정부로고"===e.alt&&(e.style.display="none",e.parentElement.textContent="정부24",e.parentElement.style.fontWeight="bold",e.parentElement.style.color="#0a1a3a")}})}document.addEventListener("DOMContentLoaded",function(){setRealViewportHeight(),h(),p(),g(),y(),S(),I(),k(),document.addEventListener("gesturestart",function(e){e.preventDefault()})})})();
     </script>
 </body>
 </html>
