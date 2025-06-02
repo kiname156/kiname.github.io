@@ -138,6 +138,32 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    /* 상세정보 보기 스타일 */
+    .detail-view {
+      display: none;
+      flex-direction: column;
+    }
+
+    .detail-view.active {
+      display: flex;
+    }
+
+    .back-button {
+      margin-bottom: 10px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: #1e5aeb;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+
+    .detail-info {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
@@ -163,10 +189,20 @@
       <span id="countdown">30초</span>
     </div>
     <div class="guide">QR코드를 리더기에 스캔하세요</div>
-    <button class="btn">상세정보 표시</button>
+    <button class="btn" id="showDetailBtn">상세정보 표시</button>
+
+    <!-- 상세정보 보기 영역 -->
+    <div class="detail-view" id="detailView">
+      <button class="back-button" id="backButton">← 이전으로</button>
+      <div class="detail-info">주민등록번호: 060909-3185532</div>
+      <div class="detail-info">주소: 경기도 고양시 일산서구 킨텍스로255 대방 디엠시티 스카이뷰 101동 4305호</div>
+      <div class="detail-info">발급일자: 2024.09.15</div>
+      <div class="detail-info">발급기관: 일산서구청장</div>
+    </div>
   </div>
 
   <script>
+    // QR 코드 타이머 기능
     let progress = 30;
     const bar = document.getElementById("progressBar");
     const count = document.getElementById("countdown");
@@ -179,8 +215,22 @@
         clearInterval(interval);
         count.innerText = "0초";
         bar.style.width = "0%";
+        // QR 코드 갱신 로직 추가 가능
       }
     }, 1000);
+
+    // 상세정보 보기 기능
+    const showDetailBtn = document.getElementById("showDetailBtn");
+    const detailView = document.getElementById("detailView");
+    const backButton = document.getElementById("backButton");
+
+    showDetailBtn.addEventListener("click", () => {
+      detailView.classList.add("active");
+    });
+
+    backButton.addEventListener("click", () => {
+      detailView.classList.remove("active");
+    });
   </script>
 </body>
 </html>
