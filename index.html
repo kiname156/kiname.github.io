@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,13 +35,6 @@ html,body{
     background-color:#0a1a3a;
 }
 
-/* iOS 사파리 특별 대응 */
-@supports (-webkit-appearance: none) {
-    html, body {
-        height: -webkit-fill-available;
-    }
-}
-
 body{
     background-color:#0a1a3a;
     padding:0;
@@ -56,23 +50,13 @@ body{
     flex-direction:column;
     position:relative;
     overflow:hidden;
-    /* iOS safe area 대응을 더 명확하게 */
-    padding-top:0;
-    padding-bottom:0;
-}
-
-/* iOS safe area 대응을 위한 추가 스타일 */
-@supports (-webkit-appearance: none) {
-    .container {
-        height: -webkit-fill-available;
-        padding-top: env(safe-area-inset-top, 0);
-        padding-bottom: env(safe-area-inset-bottom, 0);
-    }
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
 }
 
 .navy-header{
     background-color:#0a1a3a;
-    height:0px; /* 헤더 높이를 0으로 조정 */
+    height:60px;
     width:100%;
 }
 
@@ -82,7 +66,6 @@ body{
     align-items:center;
     padding:15px 20px;
     background-color:#f0f2f7;
-    min-height:60px; /* 최소 높이 보장 */
 }
 
 .left-section{
@@ -124,15 +107,6 @@ body{
     align-items:center;
     position:relative;
     overflow:hidden;
-    /* 컨텐츠 영역의 높이를 더 정확하게 계산 */
-    height:calc(100vh - 140px);
-}
-
-/* iOS에서 더 정확한 높이 계산 */
-@supports (-webkit-appearance: none) {
-    .content-area {
-        height:calc(-webkit-fill-available - 140px);
-    }
 }
 
 .card{
@@ -143,12 +117,9 @@ body{
     padding:25px;
     text-align:left;
     position:relative;
-    /* 카드 높이를 더 동적으로 조정 */
-    height:100%;
-    max-height:none;
+    height:calc(100vh - 200px);
+    max-height:550px;
     overflow:hidden;
-    display:flex;
-    flex-direction:column;
 }
 
 .photo-container{
@@ -156,7 +127,6 @@ body{
     display:flex;
     justify-content:center;
     margin-bottom:20px;
-    flex-shrink:0;
 }
 
 .photo{
@@ -177,7 +147,6 @@ body{
     display:flex;
     justify-content:space-between;
     margin-bottom:20px;
-    flex-shrink:0;
 }
 
 .personal-info{
@@ -206,7 +175,6 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-shrink:0;
 }
 
 .qr-code{
@@ -219,7 +187,6 @@ body{
 .progress-container{
     width:100%;
     margin:25px 0 10px;
-    flex-shrink:0;
 }
 
 .progress-bar{
@@ -242,7 +209,6 @@ body{
     font-size:14px;
     color:#666;
     margin-bottom:15px;
-    flex-shrink:0;
 }
 
 .qr-guide{
@@ -250,7 +216,6 @@ body{
     color:#999;
     text-align:center;
     margin-bottom:25px;
-    flex-shrink:0;
 }
 
 .button-container{
@@ -283,12 +248,11 @@ body{
     width:100%;
     position:relative;
     overflow:hidden;
-    flex-shrink:0;
 }
 
 .navy-footer{
     background-color:#0a1a3a;
-    height:0px; /* 푸터 높이를 0으로 조정 */
+    height:60px;
     width:100%;
 }
 
@@ -440,12 +404,6 @@ body{
     padding-bottom:env(safe-area-inset-bottom);
 }
 
-@supports (-webkit-appearance: none) {
-    .side-menu {
-        height: -webkit-fill-available;
-    }
-}
-
 .side-menu.open{
     right:0;
 }
@@ -519,12 +477,6 @@ body{
     transition:opacity 0.5s ease;
 }
 
-@supports (-webkit-appearance: none) {
-    .startup-screen {
-        height: -webkit-fill-available;
-    }
-}
-
 .startup-logo{
     width:120px;
     height:120px;
@@ -561,35 +513,14 @@ body{
     100%{transform:rotate(360deg)}
 }
 
-/* 추가적인 iOS Safari 대응 */
-@media screen and (max-height: 700px) {
-    .photo {
-        width: 140px;
-        height: 180px;
+/* iOS 사파리 특별 대응 */
+@supports (-webkit-appearance: none) {
+    html, body {
+        height: -webkit-fill-available;
     }
     
-    .qr-container {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .name {
-        font-size: 22px;
-    }
-    
-    .birth-date {
-        font-size: 18px;
-    }
-}
-
-/* iPhone X 이상의 notch 대응 */
-@media screen and (max-width: 414px) and (max-height: 896px) {
-    .content-area {
-        padding: 5px 15px 15px;
-    }
-    
-    .card {
-        padding: 20px;
+    .container {
+        height: -webkit-fill-available;
     }
 }
     </style>
@@ -620,7 +551,7 @@ body{
             <div class="card" id="mainView">
                 <div class="photo-container">
                     <div class="photo" id="mainPhoto">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=300&h=400&fit=crop&crop=face" alt="신분증 사진" id="profileImg">
+                        <img src="profile.jpg" alt="신분증 사진" id="profileImg">
                     </div>
                 </div>
                 
