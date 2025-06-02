@@ -76,6 +76,13 @@
   </style>
 </head>
 <body>
+  <div id="startupScreen" class="startup-screen">
+    <div class="startup-logo">
+      <img src="logo.jpg" alt="정부24 로고">
+    </div>
+    <div class="startup-text">정부24</div>
+    <div class="loading-spinner"></div>
+  </div>
   <div class="container">
     <div class="navy-header"></div>
     <div class="top-bar">
@@ -164,180 +171,5 @@
     </ul>
   </div>
   <div class="overlay" id="overlay"></div>
-  <script>
-    function setRealViewportHeight() {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    setRealViewportHeight();
-    window.addEventListener('resize', setRealViewportHeight);
-    window.addEventListener('orientationchange', () => {
-      setTimeout(setRealViewportHeight, 100);
-    });
-    function hideAddressBar() {
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        window.addEventListener('load', () => {
-          setTimeout(() => {
-            window.scrollTo(0, 1);
-            setRealViewportHeight();
-          }, 100);
-        });
-      }
-    }
-    hideAddressBar();
-    (function () {
-      setTimeout(() => {
-        const e = document.getElementById("startupScreen");
-        e.style.opacity = "0";
-        e.style.transition = "opacity 0.5s ease";
-        setTimeout(() => { e.style.display = "none"; }, 500);
-      }, 2000);
-      let t = null;
-      function h() {
-        const e = document.getElementById("qrCode"), n = 120, i = 4, r = Math.floor(n / i);
-        const s = document.createElement("canvas");
-        s.width = n;
-        s.height = n;
-        const o = s.getContext("2d");
-        function d(e, t) {
-          o.fillStyle = "black";
-          o.fillRect(e, t, 7 * i, 7 * i);
-          o.fillStyle = "white";
-          o.fillRect(e + i, t + i, 5 * i, 5 * i);
-          o.fillStyle = "black";
-          o.fillRect(e + 2 * i, t + 2 * i, 3 * i, 3 * i);
-        }
-        o.fillStyle = "white";
-        o.fillRect(0, 0, n, n);
-        d(0, 0);
-        d(n - 7 * i, 0);
-        d(0, n - 7 * i);
-        o.fillStyle = "black";
-        for (let c = 8; c < r - 8; c++) {
-          if (c % 2 == 0) {
-            o.fillRect(c * i, 6 * i, i, i);
-            o.fillRect(6 * i, c * i, i, i);
-          }
-        }
-        for (let l = 0; l < r; l++) {
-          for (let a = 0; a < r; a++) {
-            const skip = (l < 7 && a < 7) || (l < 7 && a > r - 8) || (l > r - 8 && a < 7) || (l === 6 && a >= 8 && a < r - 8) || (a === 6 && l >= 8 && l < r - 8);
-            if (!skip && Math.random() < 0.5) {
-              o.fillRect(a * i, l * i, i, i);
-            }
-          }
-        }
-        e.style.background = `url(${s.toDataURL()})`;
-        e.style.backgroundSize = "100% 100%";
-      }
-      function p() {
-        const e = document.getElementById("timeProgress"), n = document.getElementById("timeCounter");
-        let i = 30;
-        if (t) clearInterval(t);
-        e.style.width = "100%";
-        n.textContent = `${i}초`;
-        t = setInterval(() => {
-          i--;
-          n.textContent = `${i}초`;
-          e.style.width = `${(i / 30) * 100}%`;
-          if (i <= 0) {
-            clearInterval(t);
-            n.textContent = "0초";
-            e.style.width = "0%";
-            setTimeout(() => {
-              h();
-              p();
-            }, 500);
-          }
-        }, 1000);
-      }
-      function g() {
-        const e = document.getElementById("scrollingText");
-        const n = "캡쳐방지시스템이 작동중입니다. ";
-        let i = "";
-        for (let r = 0; r < 15; r++) i += n;
-        e.textContent = i;
-      }
-      function y() {
-        const e = document.getElementById("showDetailBtn"),
-              n = document.getElementById("backToMainBtn"),
-              i = document.getElementById("backToMainBtn2"),
-              r = document.getElementById("mainView"),
-              s = document.getElementById("detailView"),
-              o = document.getElementById("mainPhoto"),
-              d = document.getElementById("detailPhoto");
-        e.addEventListener("click", function () {
-          d.innerHTML = o.innerHTML;
-          r.style.display = "none";
-          s.style.display = "block";
-          if (t) clearInterval(t);
-        });
-        function c() {
-          s.style.display = "none";
-          r.style.display = "block";
-          p();
-        }
-        n.addEventListener("click", c);
-        i.addEventListener("click", c);
-      }
-      function S() {
-        const e = document.getElementById("openMenuBtn"),
-              n = document.getElementById("closeMenuBtn"),
-              i = document.getElementById("sideMenu"),
-              r = document.getElementById("overlay");
-        e.addEventListener("click", () => {
-          i.classList.add("open");
-          r.classList.add("open");
-        });
-        n.addEventListener("click", () => {
-          i.classList.remove("open");
-          r.classList.remove("open");
-        });
-        r.addEventListener("click", () => {
-          i.classList.remove("open");
-          r.classList.remove("open");
-        });
-      }
-      function I() {
-        document.getElementById("logoSection").addEventListener("click", () => {
-          window.location.reload();
-        });
-      }
-      function k() {
-        document.querySelectorAll("img").forEach(e => {
-          e.onerror = function () {
-            console.log(`이미지 로드 실패: ${e.src}`);
-            if (e.id === "profileImg") {
-              e.style.display = "none";
-              e.parentElement.style.backgroundColor = "#ccc";
-            } else if (e.alt === "공식 인장") {
-              e.style.display = "none";
-              e.parentElement.style.backgroundColor = "rgba(220, 20, 20, 0.1)";
-              e.parentElement.style.border = "2px solid rgba(220, 20, 20, 0.3)";
-              e.parentElement.style.borderRadius = "50%";
-            } else if (e.alt === "정부로고") {
-              e.style.display = "none";
-              e.parentElement.textContent = "정부24";
-              e.parentElement.style.fontWeight = "bold";
-              e.parentElement.style.color = "#0a1a3a";
-            }
-          };
-        });
-      }
-      document.addEventListener("DOMContentLoaded", function () {
-        setRealViewportHeight();
-        h();
-        p();
-        g();
-        y();
-        S();
-        I();
-        k();
-        document.addEventListener("gesturestart", function (e) {
-          e.preventDefault();
-        });
-      });
-    })();
-  </script>
 </body>
 </html>
