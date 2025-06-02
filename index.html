@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -11,35 +11,87 @@
   <meta name="msapplication-TileColor" content="#0a1a3a" />
   <meta name="msapplication-navbutton-color" content="#0a1a3a" />
   <title>주민등록증 모바일 확인 서비스</title>
+
+  <!-- 앱 아이콘 및 앱 이름 설정 -->
+  <link rel="apple-touch-icon" href="ST.JPG" />
+  <link rel="apple-touch-icon" sizes="180x180" href="ST.JPG" />
+  <link rel="apple-touch-icon" sizes="152x152" href="ST.JPG" />
+  <link rel="apple-touch-icon" sizes="120x120" href="ST.JPG" />
+  <link rel="shortcut icon" href="ST.JPG" />
+  <link rel="icon" href="ST.JPG" />
+  <meta name="apple-mobile-web-app-title" content="정부24" />
+  <meta name="application-name" content="정부24" />
+
   <style>
-    html, body {
+    :root {
+      --vh: 1vh;
+      --real-vh: 100vh;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      -webkit-overflow-scrolling: touch;
-      overflow: hidden;
+      box-sizing: border-box;
       font-family: 'Malgun Gothic', sans-serif;
-      background: #f0f2f7;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      height: auto;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      background-color: #0a1a3a;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: #0a1a3a;
+      padding: 0;
+      margin: 0;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .container {
+      width: 100%;
+      min-height: 100vh;
+      background: #f0f2f7;
       display: flex;
       flex-direction: column;
-      width: 100vw;
-      height: 100vh;
-      max-width: 480px;
-      margin: 0 auto;
-      background-color: #f0f2f7;
       position: relative;
+      top: 0;
+      left: 0;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .navy-header {
+      background-color: #0a1a3a;
+      height: 60px;
+      width: 100%;
     }
 
     .top-bar {
-      background-color: #f0f2f7;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 20px;
+      background-color: #f0f2f7;
+    }
+
+    .left-section {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
 
     .logo {
@@ -47,82 +99,127 @@
       align-items: center;
     }
 
+    .logo img {
+      height: 30px;
+    }
+
     .logo-text {
       font-size: 16px;
       font-weight: bold;
-      margin-left: 10px;
       color: #333;
+      margin-left: 10px;
+    }
+
+    .menu-icon {
+      background: none;
+      border: none;
+      color: #333;
+      font-size: 24px;
+      cursor: pointer;
+    }
+	    .content-area {
+      background-color: #f0f2f7;
+      flex: 1;
+      padding: 5px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .card {
-      flex: 1;
-      background: white;
+      background-color: #fff;
       border-radius: 20px;
-      margin: 10px 20px;
-      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      padding: 25px;
+      text-align: left;
+      position: relative;
+      max-height: none;
+      overflow: visible;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .photo-container {
+      width: 100%;
       display: flex;
       justify-content: center;
       margin-bottom: 20px;
     }
 
-    .photo-container img {
+    .photo {
       width: 160px;
       height: 200px;
-      object-fit: cover;
+      background-color: #f0f0f0;
       border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .info-container {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       margin-bottom: 20px;
     }
 
     .personal-info {
-      font-size: 18px;
+      flex: 1;
     }
 
     .name {
-      font-weight: bold;
       font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .birth-date {
       font-size: 20px;
+      margin-bottom: 8px;
     }
 
     .address {
-      color: #666;
       font-size: 16px;
+      color: #666;
     }
 
     .qr-container {
       width: 120px;
       height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .qr-code {
+      width: 100%;
+      height: 100%;
       background-color: white;
+      border: none;
+    }
+
+    .progress-container {
+      width: 100%;
+      margin: 25px 0 10px;
     }
 
     .progress-bar {
-      width: 100%;
       height: 5px;
       background-color: #e0e0e0;
       border-radius: 5px;
-      overflow: hidden;
-      margin: 15px 0;
     }
 
     .progress {
       height: 100%;
-      background-color: #2055e4;
       width: 100%;
+      background-color: #2055e4;
+      border-radius: 5px;
       transition: width 1s linear;
     }
 
@@ -131,33 +228,53 @@
       justify-content: space-between;
       font-size: 14px;
       color: #666;
+      margin-bottom: 15px;
     }
 
     .qr-guide {
       font-size: 12px;
       color: #999;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .button-container {
+      position: relative;
+      width: 100%;
+      background-color: #fff;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
 
     .button {
+      display: block;
       width: 100%;
-      background-color: #1e5aeb;
-      color: white;
-      font-size: 16px;
       padding: 15px 0;
+      background-color: #1e5aeb;
+      color: #fff;
       border: none;
-      border-radius: 12px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      font-size: 16px;
       font-weight: 500;
       cursor: pointer;
+      text-align: center;
+      margin: 0;
+      position: relative;
+      z-index: 5;
     }
-
-    .gradient-footer {
-      height: 40px;
+	    .gradient-footer {
+      height: 70px;
       background: linear-gradient(to right, #12d8e5, #7d54c0);
       width: 100%;
       position: relative;
       overflow: hidden;
+    }
+
+    .navy-footer {
+      background-color: #0a1a3a;
+      height: 60px;
+      width: 100%;
     }
 
     .scrolling-text {
@@ -172,85 +289,623 @@
     }
 
     @keyframes scrollText {
-      0% { left: 100% }
-      100% { left: -300% }
+      0% { left: 100%; }
+      100% { left: -300%; }
     }
 
-    @media screen and (max-width: 500px) {
+    #detailView {
+      display: none;
+      position: relative;
+      padding-bottom: 0;
+      height: 100%;
+    }
+
+    .detail-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: calc(100% - 60px);
+      padding-bottom: 10px;
+    }
+
+    .detail-photo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .user-id {
+      font-size: 24px;
+      font-weight: bold;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 5px;
+    }
+
+    .user-number {
+      font-size: 20px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    .detail-address {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    .detail-address p {
+      font-size: 12px;
+      line-height: 1.3;
+      margin-bottom: 3px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .detail-footer {
+      width: 100%;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 10px;
+    }
+
+    .issue-date {
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #666;
+    }
+
+    .issuing-authority-container {
+      position: relative;
+      display: inline-block;
+      margin: 0 auto 10px;
+    }
+
+    .issuing-authority {
+      position: relative;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .official-seal {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      top: -20px;
+      right: -80px;
+      z-index: 1;
+    }
+
+    .official-seal img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .button-container-detail {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      z-index: 10;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100vh;
+      background-color: #fff;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      z-index: 1000;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .side-menu.open {
+      right: 0;
+    }
+
+    .side-menu-header {
+      background-color: #0a1a3a;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-menu {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu-list li {
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu-list li a {
+      display: block;
+      padding: 15px 20px;
+      color: #333;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .menu-list li a:hover {
+      background-color: #f5f5f5;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+	    .startup-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: #333;
+      transition: opacity 0.5s ease;
+    }
+
+    .startup-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .startup-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .startup-text {
+      font-size: 24px;
+      margin-bottom: 30px;
+      font-weight: bold;
+      font-family: 'Malgun Gothic', sans-serif;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(10, 26, 58, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid #0a1a3a;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @supports (-webkit-appearance: none) {
+      html, body {
+        height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
+      }
+
+      .container {
+        height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
+      }
+    }
+
+    @media screen and (max-height: 500px) {
+      .card {
+        max-height: 400px;
+      }
+    }
+
+    @media screen and (max-height: 568px) {
+      .card {
+        padding: 20px;
+        max-height: 450px;
+      }
+    }
+
+    @media screen and (display-mode: fullscreen) {
       html, body, .container {
-        width: 100vw;
         height: 100vh;
       }
+    }
 
-      .card {
-        margin: 10px;
-      }
-
-      .qr-container {
-        width: 100px;
-        height: 100px;
+    @media all and (display-mode: standalone) {
+      html, body, .container {
+        height: 100vh;
+        height: -webkit-fill-available;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="top-bar">
-      <div class="logo">
-        <img src="logo.jpg" alt="정부로고" style="height: 30px;" />
-        <div class="logo-text">주민등록증 모바일 확인서비스</div>
-      </div>
+  <div id="startupScreen" class="startup-screen">
+    <div class="startup-logo">
+      <img src="logo.jpg" alt="정부24 로고" />
     </div>
-    <div class="card">
-      <div class="photo-container">
-        <img src="profile.jpg" alt="신분증 사진" />
-      </div>
-      <div class="info-container">
-        <div class="personal-info">
-          <div class="name">강은비</div>
-          <div class="birth-date">06.09.09</div>
-          <div class="address">경기도 고양시</div>
-        </div>
-        <div class="qr-container">
-          <canvas id="qrCodeCanvas" width="120" height="120"></canvas>
-        </div>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" id="progressBar"></div>
-      </div>
-      <div class="time-info">
-        <span>남은시간</span>
-        <span id="timeLeft">30초</span>
-      </div>
-      <div class="qr-guide">QR코드를 리더기에 스캔하세요</div>
-      <button class="button">상세정보 표시</button>
-    </div>
-    <div class="gradient-footer">
-      <div class="scrolling-text" id="scrollingText">캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다.</div>
-    </div>
+    <div class="startup-text">정부24</div>
+    <div class="loading-spinner"></div>
   </div>
-  <script>
-    let time = 30;
-    const bar = document.getElementById('progressBar');
-    const timeText = document.getElementById('timeLeft');
-    setInterval(() => {
-      time--;
-      const percent = (time / 30) * 100;
-      bar.style.width = percent + '%';
-      timeText.textContent = time + '초';
-      if (time <= 0) {
-        time = 30;
-        bar.style.width = '100%';
-      }
-    }, 1000);
+    <div class="container">
+    <div class="navy-header"></div>
 
-    const ctx = document.getElementById('qrCodeCanvas').getContext('2d');
-    ctx.fillStyle = '#000';
-    for (let i = 0; i < 120; i += 10) {
-      for (let j = 0; j < 120; j += 10) {
-        if (Math.random() > 0.5) ctx.fillRect(i, j, 8, 8);
+    <div class="top-bar">
+      <div class="left-section" id="logoSection">
+        <div class="logo">
+          <img src="logo.jpg" alt="정부로고" />
+        </div>
+        <span class="logo-text">주민등록증 모바일 확인서비스</span>
+      </div>
+      <button class="menu-icon" id="openMenuBtn">≡</button>
+    </div>
+
+    <div class="content-area">
+      <div class="card" id="mainView">
+        <div class="photo-container">
+          <div class="photo" id="mainPhoto">
+            <img src="profile.jpg" alt="신분증 사진" id="profileImg" />
+          </div>
+        </div>
+
+        <div class="info-container">
+          <div class="personal-info">
+            <div class="name">강은비</div>
+            <div class="birth-date">06.09.09</div>
+            <div class="address">경기도 고양시</div>
+          </div>
+          <div class="qr-container">
+            <div class="qr-code" id="qrCode"></div>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" id="timeProgress"></div>
+          </div>
+        </div>
+
+        <div class="time-info">
+          <span>남은시간</span>
+          <span id="timeCounter">30초</span>
+        </div>
+
+        <div class="qr-guide">QR코드를 리더기에 스캔하세요</div>
+
+        <div class="button-container">
+          <button class="button" id="showDetailBtn">상세정보 표시</button>
+        </div>
+      </div>
+
+      <div class="card" id="detailView">
+        <button class="back-button" id="backToMainBtn">←</button>
+        <div class="detail-content">
+          <div class="detail-photo-container">
+            <div class="photo" id="detailPhoto"></div>
+          </div>
+          <div class="user-id">강은비</div>
+          <div class="user-number">060909-3185532</div>
+          <div class="detail-address">
+            <p>경기도 고양시 일산서구 킨택스로255 대방 디엠시티 스카이뷰 101동 4305호</p>
+          </div>
+          <div class="detail-footer">
+            <div class="issue-date">2024.09.15</div>
+            <div class="issuing-authority-container">
+              <div class="issuing-authority">일산서구청장</div>
+              <div class="official-seal">
+                <img src="seal.jpg" alt="공식 인장" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-container-detail">
+          <button class="button" id="backToMainBtn2">이전으로</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gradient-footer">
+      <div class="scrolling-text" id="scrollingText">
+        캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다.
+      </div>
+    </div>
+
+    <div class="navy-footer"></div>
+  </div>
+
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <h3>메뉴</h3>
+      <button class="close-menu" id="closeMenuBtn">×</button>
+    </div>
+    <ul class="menu-list">
+      <li><a href="#">홈</a></li>
+      <li><a href="#">모바일 신분증</a></li>
+      <li><a href="#">정보 업데이트</a></li>
+      <li><a href="#">설정</a></li>
+      <li><a href="#">고객센터</a></li>
+      <li><a href="#">로그아웃</a></li>
+    </ul>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    function setRealViewportHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`);
+    }
+
+    setRealViewportHeight();
+    window.addEventListener('resize', setRealViewportHeight);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setRealViewportHeight, 100);
+    });
+
+    function hideAddressBar() {
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        window.addEventListener('load', () => {
+          setTimeout(() => {
+            window.scrollTo(0, 1);
+            setRealViewportHeight();
+          }, 100);
+        });
       }
     }
+
+    hideAddressBar();
+
+    (function () {
+      function removeStartup() {
+        document.getElementById("startupScreen").style.display = "none";
+      }
+
+      setTimeout(() => {
+        const screen = document.getElementById("startupScreen");
+        screen.style.opacity = "0";
+        screen.style.transition = "opacity 0.5s ease";
+        setTimeout(() => {
+          screen.style.display = "none";
+        }, 500);
+      }, 2000);
+
+      let timer = null;
+
+      function drawQR() {
+        const qr = document.getElementById("qrCode");
+        const size = 120;
+        const cell = 4;
+        const count = Math.floor(size / cell);
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+
+        function pattern(x, y) {
+          ctx.fillStyle = "black";
+          ctx.fillRect(x, y, 7 * cell, 7 * cell);
+          ctx.fillStyle = "white";
+          ctx.fillRect(x + cell, y + cell, 5 * cell, 5 * cell);
+          ctx.fillStyle = "black";
+          ctx.fillRect(x + 2 * cell, y + 2 * cell, 3 * cell, 3 * cell);
+        }
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, size, size);
+        pattern(0, 0);
+        pattern(size - 7 * cell, 0);
+        pattern(0, size - 7 * cell);
+        ctx.fillStyle = "black";
+
+        for (let i = 8; i < count - 8; i++) {
+          if (i % 2 === 0) {
+            ctx.fillRect(i * cell, 6 * cell, cell, cell);
+            ctx.fillRect(6 * cell, i * cell, cell, cell);
+          }
+        }
+
+        for (let y = 0; y < count; y++) {
+          for (let x = 0; x < count; x++) {
+            const exclude =
+              (y < 7 && x < 7) ||
+              (y < 7 && x > count - 8) ||
+              (y > count - 8 && x < 7) ||
+              (y === 6 && x >= 8 && x < count - 8) ||
+              (x === 6 && y >= 8 && y < count - 8);
+
+            if (!exclude && Math.random() < 0.5) {
+              ctx.fillRect(x * cell, y * cell, cell, cell);
+            }
+          }
+        }
+
+        qr.style.background = `url(${canvas.toDataURL()})`;
+        qr.style.backgroundSize = "100% 100%";
+      }
+
+      function startTimer() {
+        const bar = document.getElementById("timeProgress");
+        const counter = document.getElementById("timeCounter");
+        let i = 30;
+
+        if (timer) clearInterval(timer);
+
+        bar.style.width = "100%";
+        counter.textContent = `${i}초`;
+
+        timer = setInterval(() => {
+          i--;
+          counter.textContent = `${i}초`;
+          const percent = (i / 30) * 100;
+          bar.style.width = `${percent}%`;
+
+          if (i <= 0) {
+            clearInterval(timer);
+            counter.textContent = "0초";
+            bar.style.width = "0%";
+            setTimeout(() => {
+              drawQR();
+              startTimer();
+            }, 500);
+          }
+        }, 1000);
+      }
+
+      function scrollNotice() {
+        const text = document.getElementById("scrollingText");
+        const msg = "캡쳐방지시스템이 작동중입니다. ";
+        let full = "";
+        for (let i = 0; i < 15; i++) full += msg;
+        text.textContent = full;
+      }
+
+      function detailViewToggle() {
+        const showBtn = document.getElementById("showDetailBtn");
+        const backBtn = document.getElementById("backToMainBtn");
+        const backBtn2 = document.getElementById("backToMainBtn2");
+        const mainView = document.getElementById("mainView");
+        const detailView = document.getElementById("detailView");
+        const mainPhoto = document.getElementById("mainPhoto");
+        const detailPhoto = document.getElementById("detailPhoto");
+
+        showBtn.addEventListener("click", () => {
+          detailPhoto.innerHTML = mainPhoto.innerHTML;
+          mainView.style.display = "none";
+          detailView.style.display = "block";
+          if (timer) clearInterval(timer);
+        });
+
+        const back = () => {
+          detailView.style.display = "none";
+          mainView.style.display = "block";
+          startTimer();
+        };
+
+        backBtn.addEventListener("click", back);
+        backBtn2.addEventListener("click", back);
+      }
+
+      function sideMenuToggle() {
+        const openBtn = document.getElementById("openMenuBtn");
+        const closeBtn = document.getElementById("closeMenuBtn");
+        const menu = document.getElementById("sideMenu");
+        const overlay = document.getElementById("overlay");
+
+        openBtn.addEventListener("click", () => {
+          menu.classList.add("open");
+          overlay.classList.add("open");
+        });
+
+        const close = () => {
+          menu.classList.remove("open");
+          overlay.classList.remove("open");
+        };
+
+        closeBtn.addEventListener("click", close);
+        overlay.addEventListener("click", close);
+      }
+
+      function reloadLogo() {
+        document.getElementById("logoSection").addEventListener("click", () => {
+          window.location.reload();
+        });
+      }
+
+      function imageErrorFallback() {
+        const imgs = document.querySelectorAll("img");
+        imgs.forEach(img => {
+          img.onerror = () => {
+            console.log(`이미지 로드 실패: ${img.src}`);
+            if (img.id === "profileImg") {
+              img.style.display = "none";
+              img.parentElement.style.backgroundColor = "#ccc";
+            } else if (img.alt === "공식 인장") {
+              img.style.display = "none";
+              img.parentElement.style.backgroundColor = "rgba(220, 20, 20, 0.1)";
+              img.parentElement.style.border = "2px solid rgba(220, 20, 20, 0.3)";
+              img.parentElement.style.borderRadius = "50%";
+            } else if (img.alt === "정부로고") {
+              img.style.display = "none";
+              img.parentElement.textContent = "정부24";
+              img.parentElement.style.fontWeight = "bold";
+              img.parentElement.style.color = "#0a1a3a";
+            }
+          };
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setRealViewportHeight();
+        drawQR();
+        startTimer();
+        scrollNotice();
+        detailViewToggle();
+        sideMenuToggle();
+        reloadLogo();
+        imageErrorFallback();
+        document.addEventListener("gesturestart", e => e.preventDefault());
+      });
+    })();
   </script>
 </body>
 </html>
