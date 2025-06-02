@@ -11,8 +11,6 @@
   <meta name="msapplication-TileColor" content="#0a1a3a">
   <meta name="msapplication-navbutton-color" content="#0a1a3a">
   <title>주민등록증 모바일 확인 서비스</title>
-
-  <!-- 앱 아이콘 및 앱 이름 설정 -->
   <link rel="apple-touch-icon" href="ST.JPG">
   <link rel="apple-touch-icon" sizes="180x180" href="ST.JPG">
   <link rel="apple-touch-icon" sizes="152x152" href="ST.JPG">
@@ -21,13 +19,10 @@
   <link rel="icon" href="ST.JPG">
   <meta name="apple-mobile-web-app-title" content="정부24">
   <meta name="application-name" content="정부24">
-
   <style>
     :root {
       --vh: 1vh;
-      --real-vh: 100vh;
     }
-
     * {
       margin: 0;
       padding: 0;
@@ -35,18 +30,20 @@
       font-family: 'Malgun Gothic', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-
     html {
-      height: 100dvh;
+      height: 100vh;
+      height: -webkit-fill-available;
+      height: calc(var(--vh, 1vh) * 100);
       width: 100vw;
       overflow: hidden;
       position: fixed;
       background-color: #0a1a3a;
       -webkit-text-size-adjust: 100%;
     }
-
     body {
-      height: 100dvh;
+      height: 100vh;
+      height: -webkit-fill-available;
+      height: calc(var(--vh, 1vh) * 100);
       width: 100vw;
       overflow: hidden;
       position: fixed;
@@ -57,11 +54,14 @@
       background-color: #0a1a3a;
       padding: 0;
       margin: 0;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
     }
-
     .container {
       width: 100vw;
-      height: 100dvh;
+      height: 100vh;
+      height: -webkit-fill-available;
+      height: calc(var(--vh, 1vh) * 100);
       margin: 0;
       background: #f0f2f7;
       display: flex;
@@ -76,14 +76,6 @@
   </style>
 </head>
 <body>
-  <div id="startupScreen" class="startup-screen">
-    <div class="startup-logo">
-      <img src="logo.jpg" alt="정부24 로고">
-    </div>
-    <div class="startup-text">정부24</div>
-    <div class="loading-spinner"></div>
-  </div>
-
   <div class="container">
     <div class="navy-header"></div>
     <div class="top-bar">
@@ -95,7 +87,6 @@
       </div>
       <button class="menu-icon" id="openMenuBtn">≡</button>
     </div>
-
     <div class="content-area">
       <div class="card" id="mainView">
         <div class="photo-container">
@@ -103,7 +94,6 @@
             <img src="profile.jpg" alt="신분증 사진" id="profileImg">
           </div>
         </div>
-
         <div class="info-container">
           <div class="personal-info">
             <div class="name">강은비</div>
@@ -114,25 +104,20 @@
             <div class="qr-code" id="qrCode"></div>
           </div>
         </div>
-
         <div class="progress-container">
           <div class="progress-bar">
             <div class="progress" id="timeProgress"></div>
           </div>
         </div>
-
         <div class="time-info">
           <span>남은시간</span>
           <span id="timeCounter">30초</span>
         </div>
-
         <div class="qr-guide">QR코드를 리더기에 스캔하세요</div>
-
         <div class="button-container">
           <button class="button" id="showDetailBtn">상세정보 표시</button>
         </div>
       </div>
-
       <div class="card" id="detailView">
         <button class="back-button" id="backToMainBtn">←</button>
         <div class="detail-content">
@@ -159,14 +144,11 @@
         </div>
       </div>
     </div>
-
     <div class="gradient-footer">
       <div class="scrolling-text" id="scrollingText">캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다. 캡쳐방지시스템이 작동중입니다.</div>
     </div>
-
     <div class="navy-footer"></div>
   </div>
-
   <div class="side-menu" id="sideMenu">
     <div class="side-menu-header">
       <h3>메뉴</h3>
@@ -181,10 +163,181 @@
       <li><a href="#">로그아웃</a></li>
     </ul>
   </div>
-
   <div class="overlay" id="overlay"></div>
   <script>
-    // (생략) 원본 기능 유지 - QR코드, 상세보기, 메뉴 열기, 캡쳐방지 등 그대로
+    function setRealViewportHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setRealViewportHeight();
+    window.addEventListener('resize', setRealViewportHeight);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setRealViewportHeight, 100);
+    });
+    function hideAddressBar() {
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        window.addEventListener('load', () => {
+          setTimeout(() => {
+            window.scrollTo(0, 1);
+            setRealViewportHeight();
+          }, 100);
+        });
+      }
+    }
+    hideAddressBar();
+    (function () {
+      setTimeout(() => {
+        const e = document.getElementById("startupScreen");
+        e.style.opacity = "0";
+        e.style.transition = "opacity 0.5s ease";
+        setTimeout(() => { e.style.display = "none"; }, 500);
+      }, 2000);
+      let t = null;
+      function h() {
+        const e = document.getElementById("qrCode"), n = 120, i = 4, r = Math.floor(n / i);
+        const s = document.createElement("canvas");
+        s.width = n;
+        s.height = n;
+        const o = s.getContext("2d");
+        function d(e, t) {
+          o.fillStyle = "black";
+          o.fillRect(e, t, 7 * i, 7 * i);
+          o.fillStyle = "white";
+          o.fillRect(e + i, t + i, 5 * i, 5 * i);
+          o.fillStyle = "black";
+          o.fillRect(e + 2 * i, t + 2 * i, 3 * i, 3 * i);
+        }
+        o.fillStyle = "white";
+        o.fillRect(0, 0, n, n);
+        d(0, 0);
+        d(n - 7 * i, 0);
+        d(0, n - 7 * i);
+        o.fillStyle = "black";
+        for (let c = 8; c < r - 8; c++) {
+          if (c % 2 == 0) {
+            o.fillRect(c * i, 6 * i, i, i);
+            o.fillRect(6 * i, c * i, i, i);
+          }
+        }
+        for (let l = 0; l < r; l++) {
+          for (let a = 0; a < r; a++) {
+            const skip = (l < 7 && a < 7) || (l < 7 && a > r - 8) || (l > r - 8 && a < 7) || (l === 6 && a >= 8 && a < r - 8) || (a === 6 && l >= 8 && l < r - 8);
+            if (!skip && Math.random() < 0.5) {
+              o.fillRect(a * i, l * i, i, i);
+            }
+          }
+        }
+        e.style.background = `url(${s.toDataURL()})`;
+        e.style.backgroundSize = "100% 100%";
+      }
+      function p() {
+        const e = document.getElementById("timeProgress"), n = document.getElementById("timeCounter");
+        let i = 30;
+        if (t) clearInterval(t);
+        e.style.width = "100%";
+        n.textContent = `${i}초`;
+        t = setInterval(() => {
+          i--;
+          n.textContent = `${i}초`;
+          e.style.width = `${(i / 30) * 100}%`;
+          if (i <= 0) {
+            clearInterval(t);
+            n.textContent = "0초";
+            e.style.width = "0%";
+            setTimeout(() => {
+              h();
+              p();
+            }, 500);
+          }
+        }, 1000);
+      }
+      function g() {
+        const e = document.getElementById("scrollingText");
+        const n = "캡쳐방지시스템이 작동중입니다. ";
+        let i = "";
+        for (let r = 0; r < 15; r++) i += n;
+        e.textContent = i;
+      }
+      function y() {
+        const e = document.getElementById("showDetailBtn"),
+              n = document.getElementById("backToMainBtn"),
+              i = document.getElementById("backToMainBtn2"),
+              r = document.getElementById("mainView"),
+              s = document.getElementById("detailView"),
+              o = document.getElementById("mainPhoto"),
+              d = document.getElementById("detailPhoto");
+        e.addEventListener("click", function () {
+          d.innerHTML = o.innerHTML;
+          r.style.display = "none";
+          s.style.display = "block";
+          if (t) clearInterval(t);
+        });
+        function c() {
+          s.style.display = "none";
+          r.style.display = "block";
+          p();
+        }
+        n.addEventListener("click", c);
+        i.addEventListener("click", c);
+      }
+      function S() {
+        const e = document.getElementById("openMenuBtn"),
+              n = document.getElementById("closeMenuBtn"),
+              i = document.getElementById("sideMenu"),
+              r = document.getElementById("overlay");
+        e.addEventListener("click", () => {
+          i.classList.add("open");
+          r.classList.add("open");
+        });
+        n.addEventListener("click", () => {
+          i.classList.remove("open");
+          r.classList.remove("open");
+        });
+        r.addEventListener("click", () => {
+          i.classList.remove("open");
+          r.classList.remove("open");
+        });
+      }
+      function I() {
+        document.getElementById("logoSection").addEventListener("click", () => {
+          window.location.reload();
+        });
+      }
+      function k() {
+        document.querySelectorAll("img").forEach(e => {
+          e.onerror = function () {
+            console.log(`이미지 로드 실패: ${e.src}`);
+            if (e.id === "profileImg") {
+              e.style.display = "none";
+              e.parentElement.style.backgroundColor = "#ccc";
+            } else if (e.alt === "공식 인장") {
+              e.style.display = "none";
+              e.parentElement.style.backgroundColor = "rgba(220, 20, 20, 0.1)";
+              e.parentElement.style.border = "2px solid rgba(220, 20, 20, 0.3)";
+              e.parentElement.style.borderRadius = "50%";
+            } else if (e.alt === "정부로고") {
+              e.style.display = "none";
+              e.parentElement.textContent = "정부24";
+              e.parentElement.style.fontWeight = "bold";
+              e.parentElement.style.color = "#0a1a3a";
+            }
+          };
+        });
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        setRealViewportHeight();
+        h();
+        p();
+        g();
+        y();
+        S();
+        I();
+        k();
+        document.addEventListener("gesturestart", function (e) {
+          e.preventDefault();
+        });
+      });
+    })();
   </script>
 </body>
 </html>
