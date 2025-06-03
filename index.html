@@ -101,7 +101,7 @@ body{
 .content-area{
     background-color:#f0f2f7;
     flex:1;
-    padding:8px 20px 0px;
+    padding:8px 20px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -123,6 +123,7 @@ body{
     display:flex;
     flex-direction:column;
     min-height:0;
+    max-height:calc(100vh - 240px); /* 상하 여백을 고려한 최대 높이 설정 */
 }
 
 .photo-container{
@@ -232,6 +233,7 @@ body{
     display:flex;
     flex-direction:column;
     min-height:0;
+    overflow:hidden;
 }
 
 .button-container{
@@ -240,6 +242,8 @@ body{
     margin-left:-20px;
     margin-right:-20px;
     margin-bottom:-20px;
+    position:relative;
+    z-index:10;
 }
 
 .button{
@@ -556,12 +560,19 @@ body{
     }
     
     .content-area {
-        padding: 5px 15px 0px;
+        padding: 5px 15px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     
     .card {
         padding: 15px;
         border-radius: 15px;
+        max-height: none; /* 모바일에서는 max-height 제한 해제 */
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     
     .photo {
@@ -593,6 +604,12 @@ body{
     .button {
         padding: 12px 0;
         font-size: 14px;
+    }
+    
+    .button-container {
+        position: relative;
+        z-index: 10;
+        margin-top: auto;
     }
 }
 
