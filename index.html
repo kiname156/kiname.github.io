@@ -43,7 +43,8 @@ body{
     width: 100%;
     overflow: auto;
     padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* 기존 코드와 겹쳐도 OK */
+	
 }
 
 .navy-header{
@@ -235,7 +236,7 @@ body{
 }
 
 .gradient-footer{
-    height:70px;
+    height:90px;
     background:linear-gradient(to right,#12d8e5,#7d54c0);
     width:100%;
     position:relative;
