@@ -100,7 +100,7 @@ body{
 .content-area{
     background-color:#f0f2f7;
     flex:1;
-    padding:20px 20px 20px;
+    padding:5px 20px 20px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -116,10 +116,9 @@ body{
     padding:25px;
     text-align:left;
     position:relative;
-    height:calc(100vh - 240px);
-    max-height:500px;
+    max-height:550px;
     overflow:hidden;
-    margin-top:20px;
+	height: auto;
 }
 
 .photo-container{
@@ -127,12 +126,11 @@ body{
     display:flex;
     justify-content:center;
     margin-bottom:20px;
-    margin-top:15px;
 }
 
 .photo{
-    width:140px;
-    height:175px;
+    width:160px;
+    height:200px;
     background-color:#f0f0f0;
     border-radius:5px;
     overflow:hidden;
@@ -171,8 +169,8 @@ body{
 }
 
 .qr-container{
-    width:100px;
-    height:100px;
+    width:120px;
+    height:120px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -187,7 +185,7 @@ body{
 
 .progress-container{
     width:100%;
-    margin:20px 0 10px;
+    margin:25px 0 10px;
 }
 
 .progress-bar{
@@ -216,7 +214,7 @@ body{
     font-size:12px;
     color:#999;
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .button-container{
@@ -277,7 +275,6 @@ body{
     display:none;
     position:relative;
     padding-bottom:50px;
-    margin-top:10px;
 }
 
 .detail-content{
@@ -292,7 +289,6 @@ body{
     display:flex;
     justify-content:center;
     margin-bottom:15px;
-    margin-top:25px;
 }
 
 .user-id{
@@ -516,67 +512,6 @@ body{
     100%{transform:rotate(360deg)}
 }
 
-/* 모바일 최적화 */
-@media screen and (max-height: 700px) {
-    .card {
-        height: calc(100vh - 220px);
-        margin-top: 10px;
-    }
-    
-    .photo {
-        width: 120px;
-        height: 150px;
-    }
-    
-    .qr-container {
-        width: 90px;
-        height: 90px;
-    }
-    
-    .name {
-        font-size: 22px;
-    }
-    
-    .birth-date {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-height: 600px) {
-    .content-area {
-        padding: 10px 20px 20px;
-    }
-    
-    .card {
-        height: calc(100vh - 200px);
-        margin-top: 5px;
-        padding: 20px;
-    }
-    
-    .photo-container {
-        margin-bottom: 15px;
-        margin-top: 10px;
-    }
-    
-    .photo {
-        width: 110px;
-        height: 135px;
-    }
-    
-    .qr-container {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .progress-container {
-        margin: 15px 0 8px;
-    }
-    
-    .qr-guide {
-        margin-bottom: 15px;
-    }
-}
-
 /* iOS 사파리 특별 대응 */
 @supports (-webkit-appearance: none) {
     html, body {
@@ -585,6 +520,43 @@ body{
     
     .container {
         height: -webkit-fill-available;
+    }
+}
+@media screen and (max-width: 480px) {
+    .info-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .qr-container {
+        margin-top: 15px;
+    }
+
+    .photo {
+        width: 140px;
+        height: 180px;
+    }
+
+    .name {
+        font-size: 20px;
+    }
+
+    .birth-date {
+        font-size: 18px;
+    }
+
+    .address {
+        font-size: 14px;
+    }
+
+    .qr-code {
+        width: 100px;
+        height: 100px;
+    }
+
+    .button {
+        font-size: 14px;
+        padding: 12px 0;
     }
 }
     </style>
