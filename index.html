@@ -23,15 +23,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Malgun Gothic',sans-serif;-webkit-tap-highlight-color:transparent}
 
 html,body{
-    height:100vh;
-    width:100vw;
-    overflow:hidden;
-    position:fixed;
-    touch-action:manipulation;
-    -webkit-touch-callout:none;
-    -webkit-user-select:none;
-    user-select:none;
-    background-color:#0a1a3a;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    background-color: #0a1a3a;
 }
 
 body{
@@ -40,17 +39,11 @@ body{
 }
 
 .container{
-    max-width:100%;
-    width:100vw;
-    height:100vh;
-    margin:0 auto;
-    background:#f0f2f7;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    overflow:hidden;
-    padding-top:env(safe-area-inset-top);
-    padding-bottom:env(safe-area-inset-bottom);
+    min-height: 100vh;
+    width: 100%;
+    overflow: auto;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .navy-header{
@@ -116,9 +109,9 @@ body{
     padding:25px;
     text-align:left;
     position:relative;
+    height:calc(100vh - 200px);
     max-height:550px;
     overflow:hidden;
-	height: auto;
 }
 
 .photo-container{
@@ -520,43 +513,6 @@ body{
     
     .container {
         height: -webkit-fill-available;
-    }
-}
-@media screen and (max-width: 480px) {
-    .info-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .qr-container {
-        margin-top: 15px;
-    }
-
-    .photo {
-        width: 140px;
-        height: 180px;
-    }
-
-    .name {
-        font-size: 20px;
-    }
-
-    .birth-date {
-        font-size: 18px;
-    }
-
-    .address {
-        font-size: 14px;
-    }
-
-    .qr-code {
-        width: 100px;
-        height: 100px;
-    }
-
-    .button {
-        font-size: 14px;
-        padding: 12px 0;
     }
 }
     </style>
